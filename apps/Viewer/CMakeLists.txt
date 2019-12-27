@@ -53,14 +53,28 @@ FILE(GLOB LIBRARY_FILES_H "*.h" "*.inl")
 # needed by cotire when setting PCH manually
 LIST(REMOVE_ITEM LIBRARY_FILES_C ${PCH_C})
 SET(LIBRARY_FILES_C "${PCH_C};${LIBRARY_FILES_C}")
-
-cxx_executable_with_flags_no_pch(${VIEWER_NAME} "Apps" "${cxx_default}" "MVS;${OPENGL_LIBRARIES};${GLEW_LIBRARY};${GLFW_STATIC_LIBRARIES};GLEW::GLEW;${glfw3_LIBRARY};${GLFW3_LIBRARY};glfw" ${LIBRARY_FILES_C} ${LIBRARY_FILES_H})
-
+cxx_executable_with_flags_no_pch(${VIEWER_NAME}
+    "Apps"
+    "${cxx_default}"
+    "MVS;${OPENGL_LIBRARIES};${GLEW_LIBRARY};${GLFW_STATIC_LIBRARIES};GLEW::GLEW;${glfw3_LIBRARY};${GLFW3_LIBRARY};glfw"
+    ${LIBRARY_FILES_C}
+    ${LIBRARY_FILES_H}
+    )
+link_directories(${Boost_LIBRARY_DIRS})
+target_link_libraries(Viewer
+    boost_program_options
+    boost_iostreams
+    boost_system
+    boost_serialization
+    opencv_core
+    opencv_imgproc
+    opencv_highgui
+    Common)
 # Manually set Common.h as the precompiled header
 set_target_pch(${VIEWER_NAME} Common.h)
 
 if(OpenMVS_USE_BREAKPAD AND BREAKPAD_FOUND)
-	target_link_libraries(${VIEWER_NAME} ${BREAKPAD_LIBS})
+        target_link_libraries(${VIEWER_NAME} ${BREAKPAD_LIBS})
 endif()
 
 # Install

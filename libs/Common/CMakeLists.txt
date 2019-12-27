@@ -10,7 +10,7 @@ LIST(REMOVE_ITEM LIBRARY_FILES_C ${PCH_C})
 SET(LIBRARY_FILES_C "${PCH_C};${LIBRARY_FILES_C}")
 
 cxx_library_with_type_no_pch(Common "Libs" "STATIC" "${cxx_default}"
-	${LIBRARY_FILES_C} ${LIBRARY_FILES_H}
+        ${LIBRARY_FILES_C} ${LIBRARY_FILES_H}
 )
 
 # Manually set Common.h as the precompiled header
